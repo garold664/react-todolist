@@ -44,14 +44,14 @@ let dialogReducer = (state = initialState, action) => {
     // newState.newMessageText = action.text;
   } else if (action.type == ACTIONS.ADD_CATEGORY) {
     newState.categories = [...state.categories];
-    const newcategory = {
+    const newCategory = {
       color: action.payload.color,
       category: action.payload.category,
       id: new Date().getTime(),
     };
-    console.log(newcategory);
+    console.log(newCategory);
 
-    newState.categories.unshift(newcategory);
+    newState.categories.push(newCategory);
   }
   console.log(newState);
   return newState;

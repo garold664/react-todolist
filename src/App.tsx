@@ -39,7 +39,11 @@ export default function App() {
         }}
       >
         {categories.map((category) => (
-          <option value={category.category} style={{ color: category.color }}>
+          <option
+            value={category.category}
+            style={{ color: category.color }}
+            key={category.category}
+          >
             {category.category}
           </option>
         ))}
@@ -116,7 +120,7 @@ export default function App() {
       <button
         onClick={() =>
           dispatch({
-            type: 'ADD-NAME',
+            type: ACTIONS.ADD_CATEGORY,
             payload: {
               category: newCategory,
               color: categoryColor,
@@ -126,7 +130,6 @@ export default function App() {
       >
         Add new todos Category
       </button>
-      {categoryColor}
     </div>
   );
 }
