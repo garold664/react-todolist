@@ -31,9 +31,12 @@ export default function App() {
         value={name}
         onChange={(ev) => setName(ev.target.value)}
         ref={nameInputRef}
+        style={{ color: dialogNames.find((el) => el.name === name).color }}
       >
         {dialogNames.map((name) => (
-          <option value={name.name}>{name.name}</option>
+          <option value={name.name} style={{ color: name.color }}>
+            {name.name}
+          </option>
         ))}
       </select>
       {/* <input
