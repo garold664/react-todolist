@@ -1,9 +1,9 @@
 import { createStore } from 'redux';
 
-const ACTIONS = {
-  ADD_MESSAGE: 'ADD-MESSAGE',
-  MESSAGE_CHANGE: 'MESSAGE-CHANGE',
-  ADD_NAME: 'ADD-NAME',
+export const ACTIONS = {
+  ADD_MESSAGE: 'ADD_MESSAGE',
+  CHANGE_MESSAGE: 'CHANGE_MESSAGE',
+  ADD_CATEGORY: 'ADD_CATEGORY',
 };
 
 let initialState = {
@@ -32,7 +32,7 @@ let dialogReducer = (state = initialState, action) => {
 
     newState.messageItems.unshift(newMessage);
     // newState.newMessageText = "";
-  } else if (action.type == ACTIONS.MESSAGE_CHANGE) {
+  } else if (action.type == ACTIONS.CHANGE_MESSAGE) {
     const messageItemIndex = newState.messageItems.findIndex(
       (el) => el.id === action.payload.id
     );
@@ -42,7 +42,7 @@ let dialogReducer = (state = initialState, action) => {
       name: action.payload.name,
     };
     // newState.newMessageText = action.text;
-  } else if (action.type == ACTIONS.ADD_NAME) {
+  } else if (action.type == ACTIONS.ADD_CATEGORY) {
     newState.dialogNames = [...state.dialogNames];
     const newName = {
       color: action.payload.color,

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pencil } from 'lucide-react';
+import { ACTIONS } from './store/store';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -57,14 +58,14 @@ export default function App() {
         onClick={() => {
           if (editStatus === 'Send') {
             dispatch({
-              type: 'ADD-MESSAGE',
+              type: ACTIONS.ADD_MESSAGE,
               payload: { message: text, id: 5, name: name },
             });
           }
 
           if (editStatus === 'Edit') {
             dispatch({
-              type: 'MESSAGE-CHANGE',
+              type: ACTIONS.CHANGE_MESSAGE,
               payload: { message: text, id: currentItemId, name: name },
             });
           }
