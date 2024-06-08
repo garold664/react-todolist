@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pencil } from 'lucide-react';
-import './styles.css';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -16,23 +15,28 @@ export default function App() {
 
   const nameInputRef = useRef();
 
-  // useEffect(() => {
-  //   if (nameInputRef.current) {
-  //     nameInputRef.current.focus();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  }, []);
 
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
       <h2>Start editing to see some magic happen!</h2>
-      <select name="" value={name} onChange={(ev) => setName(ev.target.value)}>
+      <select
+        name=""
+        value={name}
+        onChange={(ev) => setName(ev.target.value)}
+        ref={nameInputRef}
+      >
         {dialogNames.map((name) => (
           <option value={name.name}>{name.name}</option>
         ))}
       </select>
       {/* <input
-        ref={nameInputRef}
+        
         type="text"
         value={name}
         onChange={(event) => setName(event.target.value)}
@@ -76,13 +80,10 @@ export default function App() {
           const nameColor = dialogNames.find(
             (el) => el.name === item.name
           ).color;
-          console.log(nameColor);
           return (
             <li key={item.id}>
-              <b styles={{ color: { nameColor } }}>
-                {item.name} {nameColor}
-              </b>
-              : <span>{item.message}</span>
+              <b style={{ color: nameColor }}>{item.name}</b>:{' '}
+              <span>{item.message}</span>
               <button
                 onClick={() => {
                   setEditStatus('Edit');
