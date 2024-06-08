@@ -117,7 +117,7 @@ export default function App() {
             type: 'ADD-NAME',
             payload: {
               name: newName,
-              nameColor,
+              color: nameColor,
             },
           })
         }

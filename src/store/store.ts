@@ -49,6 +49,7 @@ let dialogReducer = (state = initialState, action) => {
       name: action.payload.name,
       id: new Date().getTime(),
     };
+    console.log(newName);
 
     newState.dialogNames.unshift(newName);
   }
