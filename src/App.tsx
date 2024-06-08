@@ -5,15 +5,15 @@ import { ACTIONS } from './store/store';
 
 export default function App() {
   const dispatch = useDispatch();
-  const messageItems = useSelector((state) => state.messageItems);
-  const dialogNames = useSelector((state) => state.dialogNames);
+  const todos = useSelector((state) => state.todos);
+  const categories = useSelector((state) => state.categories);
 
   const [text, setText] = useState('');
-  const [name, setName] = useState(dialogNames[0].name);
-  const [nameColor, setNameColor] = useState('#1af901');
+  const [category, setCategory] = useState(categories[0].category);
+  const [categoryColor, setCategoryColor] = useState('#1af901');
   const [editStatus, setEditStatus] = useState('Send');
   const [currentItemId, setCurrentItemId] = useState(null);
-  const [newName, setNewName] = useState('');
+  const [newCategory, setNewCategory] = useState('');
 
   const nameInputRef = useRef();
 
@@ -29,24 +29,20 @@ export default function App() {
       <h2>Start editing to see some magic happen!</h2>
       <select
         name=""
-        value={name}
-        onChange={(ev) => setName(ev.target.value)}
+        value={category}
+        onChange={(ev) => setCategory(ev.target.value)}
         ref={nameInputRef}
-        style={{ color: dialogNames.find((el) => el.name === name).color }}
+        style={{
+          color: categories.find((el) => el.category === category).color,
+        }}
       >
-        {dialogNames.map((name) => (
-          <option value={name.name} style={{ color: name.color }}>
-            {name.name}
+        {categories.map((category) => (
+          <option value={category.category} style={{ color: category.color }}>
+            {category.category}
           </option>
         ))}
       </select>
-      {/* <input
-        
-        type="text"
-        value={name}
-        onChange={(event) => setName(event.target.value)}
-        placeholder="name"
-      /> */}
+
       <input
         type="text"
         value={text}
@@ -59,41 +55,41 @@ export default function App() {
           if (editStatus === 'Send') {
             dispatch({
               type: ACTIONS.ADD_MESSAGE,
-              payload: { message: text, id: 5, name: name },
+              payload: { todo: text, id: 5, category: name },
             });
           }
 
           if (editStatus === 'Edit') {
             dispatch({
               type: ACTIONS.CHANGE_MESSAGE,
-              payload: { message: text, id: currentItemId, name: name },
+              payload: { todo: text, id: currentItemId, category: name },
             });
           }
 
-          setName('');
+          setCategory('');
           setText('');
           setEditStatus('Send');
           setCurrentItemId(null);
           // nameInputRef.current.focus();
-          console.log(messageItems);
+          console.log(todos);
         }}
       >
         {editStatus}
       </button>
       <ul>
-        {messageItems.map((item) => {
-          const nameColor = dialogNames.find(
-            (el) => el.name === item.name
+        {todos.map((item) => {
+          const categoryColor = categories.find(
+            (el) => el.category === item.category
           ).color;
           return (
             <li key={item.id}>
-              <b style={{ color: nameColor }}>{item.name}</b>:{' '}
-              <span>{item.message}</span>
+              <b style={{ color: categoryColor }}>{item.category}</b>:{' '}
+              <span>{item.todo}</span>
               <button
                 onClick={() => {
                   setEditStatus('Edit');
-                  setName(item.name);
-                  setText(item.message);
+                  setCategory(item.category);
+                  setText(item.todo);
                   setCurrentItemId(item.id);
                 }}
               >
@@ -107,28 +103,28 @@ export default function App() {
       <input
         type="text"
         placeholder="new name"
-        value={newName}
-        onChange={(ev) => setNewName(ev.target.value)}
+        value={newCategory}
+        onChange={(ev) => setNewCategory(ev.target.value)}
       />
       <input
         type="color"
-        value={nameColor}
-        onChange={(ev) => setNameColor(ev.target.value)}
+        value={categoryColor}
+        onChange={(ev) => setCategoryColor(ev.target.value)}
       />
       <button
         onClick={() =>
           dispatch({
             type: 'ADD-NAME',
             payload: {
-              name: newName,
-              color: nameColor,
+              category: newCategory,
+              color: categoryColor,
             },
           })
         }
       >
         Add new name
       </button>
-      {nameColor}
+      {categoryColor}
     </div>
   );
 }

@@ -7,51 +7,51 @@ export const ACTIONS = {
 };
 
 let initialState = {
-  dialogNames: [
-    { name: 'John', color: '#1af901', id: 1 },
-    { name: 'David', color: '#ff0000', id: 2 },
-    { name: 'Elizabet', color: '#0000ff', id: 3 },
+  categories: [
+    { category: 'Chores', color: '#1af901', id: 1 },
+    { category: 'Programming', color: '#ff0000', id: 2 },
+    { category: 'Hobby', color: '#0000ff', id: 3 },
   ],
-  messageItems: [
-    { name: 'John', message: 'Привет', id: 1 },
-    { name: 'David', message: 'Го на Марс', id: 2 },
-    { name: 'Elizabet', message: 'Где мой чип?', id: 3 },
+  todos: [
+    { category: 'Chores', todo: 'Cleanup your room', id: 1 },
+    { category: 'Programming', todo: 'Learn React', id: 2 },
+    { category: 'Hobby', todo: 'Watch Invincible 2nd season', id: 3 },
   ],
 };
 
 let dialogReducer = (state = initialState, action) => {
   const newState = { ...state };
-  newState.messageItems = [...state.messageItems];
+  newState.todos = [...state.todos];
   if (action.type == ACTIONS.ADD_MESSAGE) {
     let newMessage = {
-      message: action.payload.message,
-      name: action.payload.name,
+      todo: action.payload.todo,
+      category: action.payload.category,
       // id: Date.now(),
       id: new Date().getTime(),
     };
 
-    newState.messageItems.unshift(newMessage);
+    newState.todos.unshift(newMessage);
     // newState.newMessageText = "";
   } else if (action.type == ACTIONS.CHANGE_MESSAGE) {
-    const messageItemIndex = newState.messageItems.findIndex(
+    const messageItemIndex = newState.todos.findIndex(
       (el) => el.id === action.payload.id
     );
-    newState.messageItems[messageItemIndex] = {
+    newState.todos[messageItemIndex] = {
       id: action.payload.id,
-      message: action.payload.message,
-      name: action.payload.name,
+      todo: action.payload.todo,
+      category: action.payload.category,
     };
     // newState.newMessageText = action.text;
   } else if (action.type == ACTIONS.ADD_CATEGORY) {
-    newState.dialogNames = [...state.dialogNames];
-    const newName = {
+    newState.categories = [...state.categories];
+    const newcategory = {
       color: action.payload.color,
-      name: action.payload.name,
+      category: action.payload.category,
       id: new Date().getTime(),
     };
-    console.log(newName);
+    console.log(newcategory);
 
-    newState.dialogNames.unshift(newName);
+    newState.categories.unshift(newcategory);
   }
 
   return newState;
