@@ -12,6 +12,7 @@ export default function App() {
   const [nameColor, setNameColor] = useState('#1af901');
   const [editStatus, setEditStatus] = useState('Send');
   const [currentItemId, setCurrentItemId] = useState(null);
+  const [newName, setNewName] = useState('');
 
   const nameInputRef = useRef();
 
@@ -99,18 +100,30 @@ export default function App() {
         })}
       </ul>
 
-      {/* <select>
-        {dialogNames.map((dialog) => (
-          <option value={dialog.id}>{dialog.name}</option>
-        ))}
-      </select> */}
-
-      <input type="text" placeholder="new name" />
+      <input
+        type="text"
+        placeholder="new name"
+        value={newName}
+        onChange={(ev) => setNewName(ev.target.value)}
+      />
       <input
         type="color"
         value={nameColor}
         onChange={(ev) => setNameColor(ev.target.value)}
       />
+      <button
+        onClick={() =>
+          dispatch({
+            type: 'ADD-NAME',
+            payload: {
+              name: newName,
+              nameColor,
+            },
+          })
+        }
+      >
+        Add new name
+      </button>
       {nameColor}
     </div>
   );
