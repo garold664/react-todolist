@@ -41,7 +41,6 @@ let dialogReducer = (state = initialState, action) => {
       todo: action.payload.todo,
       category: action.payload.category,
     };
-    // newState.newMessageText = action.text;
   } else if (action.type == ACTIONS.ADD_CATEGORY) {
     newState.categories = [...state.categories];
     const newCategory = {
@@ -49,11 +48,11 @@ let dialogReducer = (state = initialState, action) => {
       category: action.payload.category,
       id: new Date().getTime(),
     };
-    console.log(newCategory);
+    // console.log(newCategory);
 
     newState.categories.push(newCategory);
   }
-  console.log(newState);
+  // console.log(newState);
   return newState;
 };
 

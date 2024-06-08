@@ -12,10 +12,12 @@ export default function App() {
 
   const [text, setText] = useState('');
   const [category, setCategory] = useState(categories[0].category);
+  const [currentCategory, setCurrentCategory] = useState('all');
   const [categoryColor, setCategoryColor] = useState('#1af901');
   const [editStatus, setEditStatus] = useState('Add new Todo');
   const [currentItemId, setCurrentItemId] = useState(null);
   const [newCategory, setNewCategory] = useState('');
+  const [filteredTodos, setFilteredTodos] = useState(todos);
 
   const nameInputRef = useRef();
 
@@ -25,10 +27,19 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (currentCategory !== 'all') {
+      setFilteredTodos(todos.filter((el) => el.category === currentCategory));
+    } else {
+      setFilteredTodos(todos);
+    }
+  }, [currentCategory]);
+
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
       <h2>Start editing to see some magic happen!</h2>
+
       <select
         name=""
         value={category}
@@ -82,8 +93,33 @@ export default function App() {
       >
         {editStatus}
       </button>
+      <br />
+      <br />
+      <br />
+      <br />
+      <p>Show: </p>
+      <select
+        name=""
+        value={currentCategory}
+        onChange={(ev) => setCurrentCategory(ev.target.value)}
+        ref={nameInputRef}
+        style={{
+          color: categories.find((el) => el.category === category).color,
+        }}
+      >
+        <option value="all">All categories</option>
+        {categories.map((category) => (
+          <option
+            value={category.category}
+            style={{ color: category.color }}
+            key={category.category}
+          >
+            {category.category}
+          </option>
+        ))}
+      </select>
       <ul className="todos">
-        {todos.map((item) => {
+        {filteredTodos.map((item) => {
           const categoryColor = categories.find(
             (el) => el.category === item.category
           ).color;
