@@ -1,8 +1,8 @@
 import { createStore } from 'redux';
 
 export const ACTIONS = {
-  ADD_MESSAGE: 'ADD_MESSAGE',
-  CHANGE_MESSAGE: 'CHANGE_MESSAGE',
+  ADD_TODO: 'ADD_TODO',
+  CHANGE_TODO: 'CHANGE_TODO',
   ADD_CATEGORY: 'ADD_CATEGORY',
 };
 
@@ -22,7 +22,7 @@ let initialState = {
 let dialogReducer = (state = initialState, action) => {
   const newState = { ...state };
   newState.todos = [...state.todos];
-  if (action.type == ACTIONS.ADD_MESSAGE) {
+  if (action.type == ACTIONS.ADD_TODO) {
     let newMessage = {
       todo: action.payload.todo,
       category: action.payload.category,
@@ -32,12 +32,12 @@ let dialogReducer = (state = initialState, action) => {
 
     newState.todos.unshift(newMessage);
     // newState.newMessageText = "";
-  } else if (action.type == ACTIONS.CHANGE_MESSAGE) {
+  } else if (action.type == ACTIONS.CHANGE_TODO) {
     const messageItemIndex = newState.todos.findIndex(
       (el) => el.id === action.payload.id
     );
     newState.todos[messageItemIndex] = {
-      id: action.payload.id,
+      ...newState.todos[messageItemIndex],
       todo: action.payload.todo,
       category: action.payload.category,
     };
@@ -53,7 +53,7 @@ let dialogReducer = (state = initialState, action) => {
 
     newState.categories.unshift(newcategory);
   }
-
+  console.log(newState);
   return newState;
 };
 

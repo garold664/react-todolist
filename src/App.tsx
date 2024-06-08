@@ -13,7 +13,7 @@ export default function App() {
   const [text, setText] = useState('');
   const [category, setCategory] = useState(categories[0].category);
   const [categoryColor, setCategoryColor] = useState('#1af901');
-  const [editStatus, setEditStatus] = useState('Send');
+  const [editStatus, setEditStatus] = useState('Add new Todo');
   const [currentItemId, setCurrentItemId] = useState(null);
   const [newCategory, setNewCategory] = useState('');
 
@@ -54,26 +54,26 @@ export default function App() {
       <br />
       <button
         onClick={() => {
-          if (editStatus === 'Send') {
+          if (editStatus === 'Add new Todo') {
             dispatch({
-              type: ACTIONS.ADD_MESSAGE,
-              payload: { todo: text, id: 5, category: name },
+              type: ACTIONS.ADD_TODO,
+              payload: { todo: text, id: 5, category },
             });
           }
 
-          if (editStatus === 'Edit') {
+          if (editStatus === 'Edit the todo') {
             dispatch({
-              type: ACTIONS.CHANGE_MESSAGE,
-              payload: { todo: text, id: currentItemId, category: name },
+              type: ACTIONS.CHANGE_TODO,
+              payload: { todo: text, id: currentItemId, category },
             });
           }
 
-          setCategory('');
+          setCategory(categories[0].category);
           setText('');
-          setEditStatus('Send');
+          setEditStatus('Add new Todo');
           setCurrentItemId(null);
           // nameInputRef.current.focus();
-          console.log(todos);
+          // console.log(todos);
         }}
       >
         {editStatus}
@@ -89,7 +89,7 @@ export default function App() {
               <button
                 className="edit"
                 onClick={() => {
-                  setEditStatus('Edit');
+                  setEditStatus('Edit the todo');
                   setCategory(item.category);
                   setText(item.todo);
                   setCurrentItemId(item.id);
@@ -124,7 +124,7 @@ export default function App() {
           })
         }
       >
-        Add new name
+        Add new todos Category
       </button>
       {categoryColor}
     </div>
