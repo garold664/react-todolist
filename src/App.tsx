@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Pencil } from 'lucide-react';
 import { ACTIONS } from './store/store';
 
+import './App.css';
+
 export default function App() {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todos);
@@ -76,16 +78,16 @@ export default function App() {
       >
         {editStatus}
       </button>
-      <ul>
+      <ul className="todos">
         {todos.map((item) => {
           const categoryColor = categories.find(
             (el) => el.category === item.category
           ).color;
           return (
-            <li key={item.id}>
-              <b style={{ color: categoryColor }}>{item.category}</b>:{' '}
-              <span>{item.todo}</span>
+            <li key={item.id} style={{ color: categoryColor }}>
+              <b>{item.category}:</b> <span>{item.todo}</span>
               <button
+                className="edit"
                 onClick={() => {
                   setEditStatus('Edit');
                   setCategory(item.category);
