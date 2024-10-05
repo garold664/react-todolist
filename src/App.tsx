@@ -1,29 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pencil } from 'lucide-react';
-import { ACTIONS } from './store/store';
+import { addCategory, addTodo, changeTodo, RootState } from './store/store';
 
 import './App.css';
 
 export default function App() {
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todos);
-  const categories = useSelector((state) => state.categories);
+  const todos = useSelector((state: RootState) => state.todos);
+  const categories = useSelector((state: RootState) => state.categories);
 
   const [text, setText] = useState('');
   const [category, setCategory] = useState(categories[0].category);
   const [currentCategory, setCurrentCategory] = useState('all');
   const [categoryColor, setCategoryColor] = useState('#1af901');
   const [editStatus, setEditStatus] = useState('Add new Todo');
-  const [currentItemId, setCurrentItemId] = useState(null);
+  const [currentItemId, setCurrentItemId] = useState<number | null>(null);
   const [newCategory, setNewCategory] = useState('');
   const [filteredTodos, setFilteredTodos] = useState(todos);
 
-  const nameInputRef = useRef();
+  const todoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (nameInputRef.current) {
-      nameInputRef.current.focus();
+    if (todoInputRef.current) {
+      todoInputRef.current.focus();
     }
   }, []);
 
@@ -33,66 +33,57 @@ export default function App() {
     } else {
       setFilteredTodos(todos);
     }
-  }, [currentCategory]);
+  }, [currentCategory, todos]);
 
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
       <h2>Start editing to see some magic happen!</h2>
-
-      <select
-        name=""
-        value={category}
-        onChange={(ev) => setCategory(ev.target.value)}
-        ref={nameInputRef}
-        style={{
-          color: categories.find((el) => el.category === category).color,
-        }}
-      >
-        {categories.map((category) => (
-          <option
-            value={category.category}
-            style={{ color: category.color }}
-            key={category.category}
-          >
-            {category.category}
-          </option>
-        ))}
-      </select>
-
-      <input
-        type="text"
-        value={text}
-        onChange={(event) => setText(event.target.value)}
-        placeholder="text"
-      />
-      <br />
-      <button
-        onClick={() => {
+      <form
+        action=""
+        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          console.log('submit');
           if (editStatus === 'Add new Todo') {
-            dispatch({
-              type: ACTIONS.ADD_TODO,
-              payload: { todo: text, id: 5, category },
-            });
+            dispatch(addTodo({ todo: text, category, id: Date.now() }));
           }
-
           if (editStatus === 'Edit the todo') {
-            dispatch({
-              type: ACTIONS.CHANGE_TODO,
-              payload: { todo: text, id: currentItemId, category },
-            });
+            dispatch(changeTodo({ todo: text, category, id: currentItemId }));
           }
-
           setCategory(categories[0].category);
           setText('');
           setEditStatus('Add new Todo');
           setCurrentItemId(null);
-          // nameInputRef.current.focus();
-          // console.log(todos);
         }}
       >
-        {editStatus}
-      </button>
+        <select
+          name=""
+          value={category}
+          onChange={(ev) => setCategory(ev.target.value)}
+          style={{
+            color: categories.find((el) => el.category === category)?.color,
+          }}
+        >
+          {categories.map((category) => (
+            <option
+              value={category.category}
+              style={{ color: category.color }}
+              key={category.category}
+            >
+              {category.category}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          placeholder="text"
+          ref={todoInputRef}
+        />
+        <br />
+        <button>{editStatus}</button>
+      </form>
       <br />
       <br />
       <br />
@@ -102,9 +93,8 @@ export default function App() {
         name=""
         value={currentCategory}
         onChange={(ev) => setCurrentCategory(ev.target.value)}
-        ref={nameInputRef}
         style={{
-          color: categories.find((el) => el.category === category).color,
+          color: categories.find((el) => el.category === category)?.color,
         }}
       >
         <option value="all">All categories</option>
@@ -114,7 +104,7 @@ export default function App() {
             style={{ color: category.color }}
             key={category.category}
           >
-            {category.category}
+            {category.category} Category
           </option>
         ))}
       </select>
@@ -122,13 +112,14 @@ export default function App() {
         {filteredTodos.map((item) => {
           const categoryColor = categories.find(
             (el) => el.category === item.category
-          ).color;
+          )?.color;
           return (
             <li key={item.id} style={{ color: categoryColor }}>
               <b>{item.category}:</b> <span>{item.todo}</span>
               <button
                 className="edit"
                 onClick={() => {
+                  todoInputRef.current?.focus();
                   setEditStatus('Edit the todo');
                   setCategory(item.category);
                   setText(item.todo);
@@ -142,30 +133,27 @@ export default function App() {
         })}
       </ul>
 
-      <input
-        type="text"
-        placeholder="new name"
-        value={newCategory}
-        onChange={(ev) => setNewCategory(ev.target.value)}
-      />
-      <input
-        type="color"
-        value={categoryColor}
-        onChange={(ev) => setCategoryColor(ev.target.value)}
-      />
-      <button
-        onClick={() =>
-          dispatch({
-            type: ACTIONS.ADD_CATEGORY,
-            payload: {
-              category: newCategory,
-              color: categoryColor,
-            },
-          })
-        }
+      <form
+        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          dispatch(
+            addCategory({ category: newCategory, color: categoryColor })
+          );
+        }}
       >
-        Add new todos Category
-      </button>
+        <input
+          type="text"
+          placeholder="new name"
+          value={newCategory}
+          onChange={(ev) => setNewCategory(ev.target.value)}
+        />
+        <input
+          type="color"
+          value={categoryColor}
+          onChange={(ev) => setCategoryColor(ev.target.value)}
+        />
+        <button>Add new todos Category</button>
+      </form>
     </div>
   );
 }
