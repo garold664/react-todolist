@@ -4,6 +4,7 @@ import { Pencil } from 'lucide-react';
 import { addCategory, addTodo, changeTodo, RootState } from './store/store';
 
 import './App.css';
+import { useMessage } from './context/MessageContext';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -18,8 +19,24 @@ export default function App() {
   const [currentItemId, setCurrentItemId] = useState<number | null>(null);
   const [newCategory, setNewCategory] = useState('');
   const [filteredTodos, setFilteredTodos] = useState(todos);
-
+  const { setMessage, setType } = useMessage();
   const todoInputRef = useRef<HTMLInputElement>(null);
+
+  function handleAddCategory(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const existingCategory = categories.find(
+      (el) => el.category === newCategory
+    );
+    if (existingCategory) {
+      setMessage('Category already exists');
+      setType('error');
+      return;
+    }
+    dispatch(addCategory({ category: newCategory, color: categoryColor }));
+    setCategory(newCategory);
+    todoInputRef.current?.focus();
+    setNewCategory('');
+  }
 
   useEffect(() => {
     if (todoInputRef.current) {
@@ -133,14 +150,7 @@ export default function App() {
         })}
       </ul>
 
-      <form
-        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          dispatch(
-            addCategory({ category: newCategory, color: categoryColor })
-          );
-        }}
-      >
+      <form onSubmit={handleAddCategory}>
         <input
           type="text"
           placeholder="new name"
