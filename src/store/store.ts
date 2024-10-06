@@ -1,11 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-export const ACTIONS = {
-  ADD_TODO: 'ADD_TODO',
-  CHANGE_TODO: 'CHANGE_TODO',
-  ADD_CATEGORY: 'ADD_CATEGORY',
-};
-
 const initialState = {
   categories: [
     { category: 'Chores', color: '#1af901', id: 1 },

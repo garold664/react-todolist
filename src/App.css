@@ -24,32 +24,3 @@
   flex-direction: column;
   gap: 1.5rem;
 }
-
-.todos li {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: rgb(0, 0, 0, 0.3);
-}
-
-.todos li > * {
-  color: white;
-}
-
-.todos li::before {
-  display: inline-block;
-  background-color: currentColor;
-  content: '';
-  width: 20px;
-  height: 20px;
-  /* border: 1px solid #464646; */
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.edit {
-  margin-left: auto;
-}

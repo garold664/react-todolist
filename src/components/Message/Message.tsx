@@ -1,4 +1,4 @@
-import { useMessage } from '../context/MessageContext';
+import { useMessage } from '../../context/MessageContext';
 
 import classes from './Message.module.css';
 
