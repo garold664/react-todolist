@@ -2,12 +2,6 @@ import { useMessage } from '../../context/MessageContext';
 
 import classes from './Message.module.css';
 
-// type MessageProps = {
-//   message: string;
-// };
-
-console.log(classes);
-
 export default function Message() {
   const { message, setMessage, type, setType } = useMessage();
   if (!message) return null;

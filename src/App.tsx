@@ -93,7 +93,11 @@ export default function App() {
           </option>
         ))}
       </select>
-      <TodoList filteredTodos={filteredTodos} handleEdit={handleTodoEdit} />
+      <TodoList
+        filteredTodos={filteredTodos}
+        setFilteredTodos={setFilteredTodos}
+        handleEdit={handleTodoEdit}
+      />
       <AddCategory todoInputRef={todoInputRef} setCategory={setCategory} />
     </div>
   );
