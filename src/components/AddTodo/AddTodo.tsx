@@ -1,6 +1,6 @@
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 type AddTodoProps = {
   addTodo: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -29,7 +29,7 @@ export default forwardRef<TodoInputRef, AddTodoProps>(function AddTodo(
     []
   );
   return (
-    <form action="" onSubmit={addTodo}>
+    <form action="" onSubmit={addTodo} data-testid="add-todo-form">
       <select
         name=""
         value={category}
@@ -53,6 +53,7 @@ export default forwardRef<TodoInputRef, AddTodoProps>(function AddTodo(
         value={text}
         onChange={(event) => setText(event.target.value)}
         placeholder="text"
+        data-testid="text-input"
         ref={todoInputRef}
       />
       <br />
