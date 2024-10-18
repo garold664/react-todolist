@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, changeTodo, RootState } from './store/store';
 
 import './App.css';
@@ -79,7 +79,8 @@ export default function App() {
         value={currentCategory}
         onChange={(ev) => setCurrentCategory(ev.target.value)}
         style={{
-          color: categories.find((el) => el.category === category)?.color,
+          color: categories.find((el) => el.category === currentCategory)
+            ?.color,
         }}
       >
         <option value="all">All categories</option>
