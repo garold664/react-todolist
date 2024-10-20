@@ -6,6 +6,7 @@ import './App.css';
 import AddCategory from './components/AddCategory/AddCategory';
 import AddTodo, { TodoInputRef } from './components/AddTodo/AddTodo';
 import TodoList from './components/TodoList/TodoList';
+import SelectCategory from './shared/ui/SelectCategory/SelectCategory';
 import selectCategories from './store/selectors/selectCategories';
 
 export default function App() {
@@ -47,8 +48,8 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
+      <h1>Todo List</h1>
+      <h2>Start adding your tasks</h2>
       <AddTodo
         addTodo={handleAddTodo}
         text={text}
@@ -57,27 +58,15 @@ export default function App() {
         setText={setText}
         ref={todoInputRef}
       />
-      <p>Show: </p>
-      <select
-        name=""
-        value={currentCategory}
-        onChange={(ev) => setCurrentCategory(ev.target.value)}
-        style={{
-          color: categories.find((el) => el.category === currentCategory)
-            ?.color,
-        }}
-      >
-        <option value="all">All categories</option>
-        {categories.map((category) => (
-          <option
-            value={category.category}
-            style={{ color: category.color }}
-            key={category.category}
-          >
-            {category.category} Category
-          </option>
-        ))}
-      </select>
+      <div className="flex">
+        <p>Show category: </p>
+        <SelectCategory
+          onChange={(ev) => setCurrentCategory(ev.target.value)}
+          categories={categories}
+          categoryName={currentCategory}
+          allCategory
+        />
+      </div>
       <TodoList
         filteredTodos={filteredTodos}
         setFilteredTodos={setFilteredTodos}
