@@ -37,6 +37,7 @@ const todosSlice = createSlice({
         todo: action.payload.todo,
         category: action.payload.category,
       };
+      console.log('Redux: ', action.payload.todo);
     },
     addCategory: (state, action) => {
       const newCategory = {

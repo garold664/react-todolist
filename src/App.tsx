@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, changeTodo, RootState } from './store/store';
+import { addTodo, RootState } from './store/store';
 
 import './App.css';
 import AddCategory from './components/AddCategory/AddCategory';
@@ -15,36 +15,25 @@ export default function App() {
   const [text, setText] = useState('');
   const [category, setCategory] = useState(categories[0].category);
   const [currentCategory, setCurrentCategory] = useState('all');
-  const [editStatus, setEditStatus] = useState('Add new Todo');
-  const [currentItemId, setCurrentItemId] = useState<number | null>(null);
+  // const [editStatus, setEditStatus] = useState('Add new Todo');
+  // const [currentItemId, setCurrentItemId] = useState<number | null>(null);
 
   const [filteredTodos, setFilteredTodos] = useState(todos);
   const todoInputRef = useRef<TodoInputRef>(null);
 
   const handleAddTodo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (editStatus === 'Add new Todo') {
-      dispatch(addTodo({ todo: text, category, id: Date.now() }));
-    }
-    if (editStatus === 'Edit the todo') {
-      dispatch(changeTodo({ todo: text, category, id: currentItemId }));
-    }
+    dispatch(addTodo({ todo: text, category, id: Date.now() }));
+    // if (editStatus === 'Add new Todo') {
+    // }
+    // if (editStatus === 'Edit the todo') {
+    //   dispatch(changeTodo({ todo: text, category, id: currentItemId }));
+    // }
     setCategory(categories[0].category);
     setText('');
-    setEditStatus('Add new Todo');
-    setCurrentItemId(null);
+    // setEditStatus('Add new Todo');
+    // setCurrentItemId(null);
   };
-
-  const handleTodoEdit = useCallback(
-    (item: TodoItem) => () => {
-      todoInputRef.current?.focus();
-      setEditStatus('Edit the todo');
-      setCategory(item.category);
-      setText(item.todo);
-      setCurrentItemId(item.id);
-    },
-    []
-  );
 
   useEffect(() => {
     if (todoInputRef.current) {
@@ -70,7 +59,7 @@ export default function App() {
         category={category}
         setCategory={setCategory}
         setText={setText}
-        editStatus={editStatus}
+        // editStatus={editStatus}
         ref={todoInputRef}
       />
       <p>Show: </p>
@@ -97,7 +86,6 @@ export default function App() {
       <TodoList
         filteredTodos={filteredTodos}
         setFilteredTodos={setFilteredTodos}
-        handleEdit={handleTodoEdit}
       />
       <AddCategory todoInputRef={todoInputRef} setCategory={setCategory} />
     </div>

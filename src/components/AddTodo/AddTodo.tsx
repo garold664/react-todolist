@@ -8,13 +8,13 @@ type AddTodoProps = {
   setCategory: (category: string) => void;
   text: string;
   setText: (text: string) => void;
-  editStatus: string;
+  // editStatus: string;
 };
 
 export type TodoInputRef = { focus: () => void };
 
 export default forwardRef<TodoInputRef, AddTodoProps>(function AddTodo(
-  { addTodo, category, setCategory, text, setText, editStatus },
+  { addTodo, category, setCategory, text, setText },
   ref
 ) {
   const categories = useSelector((state: RootState) => state.categories);
@@ -57,7 +57,7 @@ export default forwardRef<TodoInputRef, AddTodoProps>(function AddTodo(
         ref={todoInputRef}
       />
       <br />
-      <button>{editStatus}</button>
+      <button>Add Todo</button>
     </form>
   );
 });

@@ -1,23 +1,23 @@
+import { memo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import TodoItem from '../TodoItem/TodoItem';
 import { RootState } from '../../store/store';
-import { memo, useRef } from 'react';
+import TodoItem from '../TodoItem/TodoItem';
 
 type TodoListProps = {
   filteredTodos: TodoItem[];
   setFilteredTodos: React.Dispatch<React.SetStateAction<TodoItem[]>>;
-  handleEdit: (item: TodoItem) => () => void;
 };
 
 export default memo(function TodoList({
   filteredTodos,
   setFilteredTodos,
-  handleEdit,
 }: TodoListProps) {
   const categories = useSelector((state: RootState) => state.categories);
   const draggedElement = useRef<EventTarget | null>(null);
   const draggedOverElement = useRef<EventTarget | null>(null);
   const clickedElement = useRef<EventTarget | null>(null);
+
+  const [editedId, setEditedId] = useState<number | null>(null);
 
   function handleMouseDown(event: React.MouseEvent<HTMLUListElement>) {
     clickedElement.current = event.target;
@@ -112,7 +112,8 @@ export default memo(function TodoList({
             key={item.id}
             item={item}
             categoryColor={categoryColor ? categoryColor : '#1af901'}
-            handleEdit={handleEdit}
+            isEdited={editedId === item.id}
+            setEditedId={setEditedId}
           />
         );
       })}

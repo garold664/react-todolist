@@ -16,6 +16,12 @@
   color: white;
 }
 
+.editForm {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
 /* .todo::before {
   display: inline-block;
   background-color: currentColor;
