@@ -1,43 +1,40 @@
 import { CheckIcon, GripIcon, PencilIcon, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import store, { changeTodo, RootState } from '../../store/store';
+import selectCategories from '../../store/selectors/selectCategories';
+import selectItem from '../../store/selectors/selectItem';
+import { changeTodo } from '../../store/store';
 import classes from './TodoItem.module.css';
 type TodoItemProps = {
-  item: TodoItem;
-  categoryColor: string;
+  itemId: number;
   isEdited: boolean;
   setEditedId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-// console.log(classes.grip);
-
 export default function TodoItem({
-  item,
-  categoryColor,
+  itemId,
   isEdited,
   setEditedId,
 }: TodoItemProps) {
   const dispatch = useDispatch();
-  // const [isEditing, setIsEditing] = useState(false);
+  const item = useSelector(selectItem(itemId)) as TodoItem;
+  const categories = useSelector(selectCategories);
 
   const [todoText, setTodoText] = useState(item.todo);
   const [category, setCategory] = useState(() => item.category);
-  const todoRef = useRef<HTMLInputElement>(null);
 
-  const categories = useSelector((state: RootState) => state.categories);
+  const categoryColor = getCategoryColor(category);
+  const todoRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isEdited) {
       todoRef.current?.focus();
     } else {
       setTodoText(item.todo);
-      console.log(store.getState().todos[0]);
     }
   }, [isEdited, item.todo]);
 
   const handleTodoEdit = () => {
-    // setIsEditing(true);
     setEditedId(item.id);
   };
 
@@ -53,9 +50,7 @@ export default function TodoItem({
     ) {
       return;
     }
-    // setIsEditing(false);
     setTodoText(todoText);
-    console.log('submit: ', category);
     dispatch(
       changeTodo({
         todo: todoText,
@@ -65,10 +60,22 @@ export default function TodoItem({
     );
   };
 
+  function getCategoryColor(category: string) {
+    return categories.find((el) => el.category === category)?.color;
+  }
+
   const handleDiscardTodoChange = () => {
     setEditedId(null);
     setTodoText(item.todo);
+    setCategory(item.category);
   };
+
+  const handleCategoryChange = (ev: React.ChangeEvent<HTMLSelectElement>) =>
+    setCategory(ev.target.value);
+
+  if (!item) {
+    return <div>Not found</div>;
+  }
 
   return (
     <li
@@ -76,12 +83,11 @@ export default function TodoItem({
       key={item.id}
       className={classes.todo}
       id={item.id.toString()}
-      // style={{ color: categoryColor }}
     >
       <span data-grip className={classes.grip} style={{ color: categoryColor }}>
         <GripIcon />
       </span>
-      <b>{item.category}:</b>{' '}
+      <b>{item.category}:</b>
       {!isEdited && <span data-testid="todo-text">{item.todo}</span>}
       {isEdited && (
         <form className={classes.editForm} onSubmit={handleSubmitTodoChange}>
@@ -95,9 +101,9 @@ export default function TodoItem({
           <select
             name=""
             value={category}
-            onChange={(ev) => setCategory(ev.target.value)}
+            onChange={handleCategoryChange}
             style={{
-              color: categories.find((el) => el.category === category)?.color,
+              color: categoryColor,
             }}
           >
             {categories.map((category) => (

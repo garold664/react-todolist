@@ -1,6 +1,4 @@
 import { memo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import TodoItem from '../TodoItem/TodoItem';
 
 type TodoListProps = {
@@ -12,7 +10,6 @@ export default memo(function TodoList({
   filteredTodos,
   setFilteredTodos,
 }: TodoListProps) {
-  const categories = useSelector((state: RootState) => state.categories);
   const draggedElement = useRef<EventTarget | null>(null);
   const draggedOverElement = useRef<EventTarget | null>(null);
   const clickedElement = useRef<EventTarget | null>(null);
@@ -103,15 +100,10 @@ export default memo(function TodoList({
       onMouseDown={handleMouseDown}
     >
       {filteredTodos.map((item: TodoItem) => {
-        const categoryColor = categories.find(
-          (el) => el.category === item.category
-        )?.color;
-
         return (
           <TodoItem
             key={item.id}
-            item={item}
-            categoryColor={categoryColor ? categoryColor : '#1af901'}
+            itemId={item.id}
             isEdited={editedId === item.id}
             setEditedId={setEditedId}
           />

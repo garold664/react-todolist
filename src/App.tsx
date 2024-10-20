@@ -6,17 +6,16 @@ import './App.css';
 import AddCategory from './components/AddCategory/AddCategory';
 import AddTodo, { TodoInputRef } from './components/AddTodo/AddTodo';
 import TodoList from './components/TodoList/TodoList';
+import selectCategories from './store/selectors/selectCategories';
 
 export default function App() {
   const dispatch = useDispatch();
   const todos = useSelector((state: RootState) => state.todos);
-  const categories = useSelector((state: RootState) => state.categories);
+  const categories = useSelector(selectCategories);
 
   const [text, setText] = useState('');
   const [category, setCategory] = useState(categories[0].category);
   const [currentCategory, setCurrentCategory] = useState('all');
-  // const [editStatus, setEditStatus] = useState('Add new Todo');
-  // const [currentItemId, setCurrentItemId] = useState<number | null>(null);
 
   const [filteredTodos, setFilteredTodos] = useState(todos);
   const todoInputRef = useRef<TodoInputRef>(null);
@@ -24,15 +23,9 @@ export default function App() {
   const handleAddTodo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(addTodo({ todo: text, category, id: Date.now() }));
-    // if (editStatus === 'Add new Todo') {
-    // }
-    // if (editStatus === 'Edit the todo') {
-    //   dispatch(changeTodo({ todo: text, category, id: currentItemId }));
-    // }
+
     setCategory(categories[0].category);
     setText('');
-    // setEditStatus('Add new Todo');
-    // setCurrentItemId(null);
   };
 
   useEffect(() => {
@@ -59,7 +52,6 @@ export default function App() {
         category={category}
         setCategory={setCategory}
         setText={setText}
-        // editStatus={editStatus}
         ref={todoInputRef}
       />
       <p>Show: </p>
