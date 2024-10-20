@@ -1,8 +1,29 @@
 import { CheckIcon, XIcon } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import Button from '../../shared/ui/Button/Button';
 import SelectCategory from '../../shared/ui/SelectCategory/SelectCategory';
+import selectCategories from '../../store/selectors/selectCategories';
 import { changeTodo } from '../../store/store';
 
-export default function EditTodoForm() {
+import { useEffect, useRef, useState } from 'react';
+import classes from './EditTodoForm.module.css';
+
+type EditTodoFormProps = {
+  setEditedId: React.Dispatch<React.SetStateAction<number | null>>;
+  item: TodoItem;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+};
+export default function EditTodoForm({
+  setEditedId,
+  item,
+  category,
+  setCategory,
+}: EditTodoFormProps) {
+  const [todoText, setTodoText] = useState(item.todo);
+  const dispatch = useDispatch();
+  const todoRef = useRef<HTMLInputElement>(null);
+  const categories = useSelector(selectCategories);
   const handleTodoOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTodoText(e.target.value);
 
@@ -25,10 +46,6 @@ export default function EditTodoForm() {
     );
   };
 
-  function getCategoryColor(category: string) {
-    return categories.find((el) => el.category === category)?.color;
-  }
-
   const handleDiscardTodoChange = () => {
     setEditedId(null);
     setTodoText(item.todo);
@@ -37,6 +54,10 @@ export default function EditTodoForm() {
 
   const handleCategoryChange = (ev: React.ChangeEvent<HTMLSelectElement>) =>
     setCategory(ev.target.value);
+
+  useEffect(() => {
+    todoRef.current?.focus();
+  }, [todoRef]);
 
   if (!item) {
     return <div>Not found</div>;
@@ -54,18 +75,13 @@ export default function EditTodoForm() {
         onChange={handleCategoryChange}
         categories={categories}
         categoryName={category}
-        // categoryColor={categoryColor}
       />
-      <button className={classes.edit}>
+      <Button>
         <CheckIcon aria-label="Save the todo" />
-      </button>
-      <button
-        className={classes.edit}
-        type="button"
-        onClick={handleDiscardTodoChange}
-      >
+      </Button>
+      <Button type="button" onClick={handleDiscardTodoChange}>
         <XIcon aria-label="Discard the change" />
-      </button>
+      </Button>
     </form>
   );
 }
