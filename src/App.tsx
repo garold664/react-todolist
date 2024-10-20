@@ -22,6 +22,9 @@ export default function App() {
 
   const handleAddTodo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (text.trim() === '') {
+      return;
+    }
     dispatch(addTodo({ todo: text, category, id: Date.now() }));
 
     setCategory(categories[0].category);
