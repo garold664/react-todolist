@@ -1,6 +1,7 @@
 import { CheckIcon, GripIcon, PencilIcon, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import SelectCategory from '../../shared/ui/SelectCategory/SelectCategory';
 import selectCategories from '../../store/selectors/selectCategories';
 import selectItem from '../../store/selectors/selectItem';
 import { changeTodo } from '../../store/store';
@@ -98,24 +99,12 @@ export default function TodoItem({
             data-testid="todo-input"
             onChange={handleTodoOnChange}
           />
-          <select
-            name=""
-            value={category}
+          <SelectCategory
             onChange={handleCategoryChange}
-            style={{
-              color: categoryColor,
-            }}
-          >
-            {categories.map((category) => (
-              <option
-                value={category.category}
-                style={{ color: category.color }}
-                key={category.category}
-              >
-                {category.category}
-              </option>
-            ))}
-          </select>
+            categories={categories}
+            categoryName={category}
+            // categoryColor={categoryColor}
+          />
           <button className={classes.edit}>
             <CheckIcon aria-label="Save the todo" />
           </button>

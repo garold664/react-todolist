@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import SelectCategory from '../../shared/ui/SelectCategory/SelectCategory';
 import { RootState } from '../../store/store';
 
 type AddTodoProps = {
@@ -28,26 +29,19 @@ export default forwardRef<TodoInputRef, AddTodoProps>(function AddTodo(
     },
     []
   );
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setCategory(event.target.value);
+  };
   return (
     <form action="" onSubmit={addTodo} data-testid="add-todo-form">
-      <select
-        name=""
-        value={category}
-        onChange={(ev) => setCategory(ev.target.value)}
-        style={{
-          color: categories.find((el) => el.category === category)?.color,
-        }}
-      >
-        {categories.map((category) => (
-          <option
-            value={category.category}
-            style={{ color: category.color }}
-            key={category.category}
-          >
-            {category.category}
-          </option>
-        ))}
-      </select>
+      <SelectCategory
+        categoryName={category}
+        onChange={handleCategoryChange}
+        categories={categories}
+      />
       <input
         type="text"
         value={text}
