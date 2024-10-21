@@ -7,7 +7,14 @@ import TodoItem from './TodoItem';
 
 const store = createReduxStore({
   categories: [{ category: 'TestCategory345', color: '#1af901', id: 1 }],
-  todos: [{ category: 'TestCategory345', todo: 'TestTodo345', id: 1 }],
+  todos: [
+    {
+      category: 'TestCategory345',
+      todo: 'TestTodo345',
+      id: 1,
+      completed: false,
+    },
+  ],
 });
 const item = store.getState().todos[0];
 

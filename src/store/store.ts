@@ -7,9 +7,14 @@ const startingState = {
     { category: 'Hobby', color: '#0000ff', id: 3 },
   ],
   todos: [
-    { category: 'Chores', todo: 'Cleanup your room', id: 1 },
-    { category: 'Programming', todo: 'Learn React', id: 2 },
-    { category: 'Hobby', todo: 'Watch Invincible 2nd season', id: 3 },
+    { category: 'Chores', todo: 'Cleanup your room', id: 1, completed: true },
+    { category: 'Programming', todo: 'Learn React', id: 2, completed: false },
+    {
+      category: 'Hobby',
+      todo: 'Watch Invincible 2nd season',
+      id: 3,
+      completed: false,
+    },
   ],
 };
 
@@ -23,6 +28,7 @@ const todosSlice = createSlice({
         category: action.payload.category,
         // id: Date.now(),
         id: new Date().getTime(),
+        completed: false,
       };
 
       state.todos.unshift(newMessage);
