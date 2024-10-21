@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+const startingState = {
   categories: [
     { category: 'Chores', color: '#1af901', id: 1 },
     { category: 'Programming', color: '#ff0000', id: 2 },
@@ -15,7 +15,7 @@ const initialState = {
 
 const todosSlice = createSlice({
   name: 'todos',
-  initialState: initialState,
+  initialState: startingState,
   reducers: {
     addTodo: (state, action) => {
       const newMessage = {
@@ -51,6 +51,13 @@ const todosSlice = createSlice({
   },
 });
 
+export const createReduxStore = (initialState = startingState) => {
+  return configureStore({
+    reducer: todosSlice.reducer,
+    preloadedState: initialState,
+  });
+};
+
 const store = configureStore({
   reducer: todosSlice.reducer,
 });
@@ -58,4 +65,4 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 
 export const { addTodo, changeTodo, addCategory } = todosSlice.actions;
-export default store;
+// export default store;

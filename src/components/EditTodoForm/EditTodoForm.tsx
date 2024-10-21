@@ -20,14 +20,18 @@ export default function EditTodoForm({
   category,
   setCategory,
 }: EditTodoFormProps) {
+  console.log('EDITTODOFORM');
   const [todoText, setTodoText] = useState(item.todo);
   const dispatch = useDispatch();
   const todoRef = useRef<HTMLInputElement>(null);
   const categories = useSelector(selectCategories);
-  const handleTodoOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleTodoOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('TODO CHANGE: ', e.target.value);
     setTodoText(e.target.value);
+  };
 
   const handleSubmitTodoChange = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('Todo Change Submit: ', todoText);
     e.preventDefault();
     setEditedId(null);
     if (
@@ -52,8 +56,10 @@ export default function EditTodoForm({
     setCategory(item.category);
   };
 
-  const handleCategoryChange = (ev: React.ChangeEvent<HTMLSelectElement>) =>
+  const handleCategoryChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log('INPUT CHANGE: ', ev.target.value);
     setCategory(ev.target.value);
+  };
 
   useEffect(() => {
     todoRef.current?.focus();
@@ -70,6 +76,11 @@ export default function EditTodoForm({
         value={todoText}
         data-testid="todo-input"
         onChange={handleTodoOnChange}
+        onKeyDown={(e) => {
+          console.log('key: ', e.key);
+          console.log('shift: ', e.shiftKey);
+          console.log('ctrl: ', e.ctrlKey);
+        }}
       />
       <SelectCategory
         onChange={handleCategoryChange}

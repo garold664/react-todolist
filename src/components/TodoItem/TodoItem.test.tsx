@@ -2,14 +2,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
 import { Provider } from 'react-redux';
-import store from '../../store/store';
+import { createReduxStore } from '../../store/store';
 import TodoItem from './TodoItem';
 
-const item = {
-  id: 1,
-  todo: 'testTodo#134',
-  category: 'testCategory#09845',
-};
+const store = createReduxStore({
+  categories: [{ category: 'TestCategory345', color: '#1af901', id: 1 }],
+  todos: [{ category: 'TestCategory345', todo: 'TestTodo345', id: 1 }],
+});
+const item = store.getState().todos[0];
 
 let rerender = (ui: ReactNode) => {
   console.log(ui);
@@ -19,22 +19,15 @@ describe('TodoItem Component', () => {
   beforeEach(() => {
     ({ rerender } = render(
       <Provider store={store}>
-        <TodoItem
-          item={item}
-          categoryColor={'#1af901'}
-          setEditedId={() => {}}
-          isEdited={false}
-        />
+        <TodoItem itemId={item.id} setEditedId={() => {}} isEdited={false} />
       </Provider>
     ));
   });
   test('renders the TodoItem component', async () => {
-    // screen.debug();
     const todoSpan = screen.getByTestId('todo-text');
-    expect(todoSpan).toHaveTextContent(/testTodo#134/i);
-
-    const categorySpan = screen.getByText(/testCategory#09845/i);
-    expect(categorySpan).toHaveTextContent(/testCategory#09845/i);
+    expect(todoSpan).toHaveTextContent(item.todo);
+    const categorySpan = screen.getByText(/testCategory345/i);
+    expect(categorySpan).toHaveTextContent(item.category);
 
     const editButton = screen.getByRole('button', { name: 'Edit the todo' });
     expect(editButton).toBeInTheDocument();
@@ -43,6 +36,11 @@ describe('TodoItem Component', () => {
   test('calls focus method on input when Editing', async () => {
     const editButton = screen.getByRole('button', { name: 'Edit the todo' });
     fireEvent.click(editButton);
+    rerender(
+      <Provider store={store}>
+        <TodoItem itemId={item.id} setEditedId={() => {}} isEdited={true} />
+      </Provider>
+    );
     // screen.debug();
     const todoInput = await screen.findByTestId('todo-input');
     expect(todoInput).toBeInTheDocument();
@@ -51,27 +49,24 @@ describe('TodoItem Component', () => {
 
   test('changes todo text when editing', async () => {
     const editButton = screen.getByRole('button', { name: 'Edit the todo' });
-    fireEvent.click(editButton);
-    let todoInput = await screen.findByTestId('todo-input');
-
-    fireEvent.change(todoInput, { target: { value: 'newTodo' } });
-    expect(todoInput).toHaveValue('newTodo');
-    todoInput = await screen.findByTestId('todo-input');
-    expect(todoInput).toHaveValue('newTodo');
-
-    userEvent.type(todoInput, '{enter}');
-
-    await screen.findByTestId('todo-text');
     const item = store.getState().todos[0];
-    console.log(item);
+    fireEvent.click(editButton);
     rerender(
       <Provider store={store}>
-        <TodoItem
-          item={item}
-          categoryColor={'#1af901'}
-          setEditedId={() => {}}
-          isEdited={false}
-        />
+        <TodoItem itemId={item.id} setEditedId={() => {}} isEdited={true} />
+      </Provider>
+    );
+    const todoInput = await screen.findByTestId('todo-input');
+
+    await userEvent.clear(todoInput);
+    await userEvent.type(todoInput, 'newTodo');
+
+    expect(await screen.findByTestId('todo-input')).toHaveValue('newTodo');
+    await userEvent.type(todoInput, '{enter}');
+
+    rerender(
+      <Provider store={store}>
+        <TodoItem itemId={item.id} setEditedId={() => {}} isEdited={false} />
       </Provider>
     );
 

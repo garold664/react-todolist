@@ -34,7 +34,6 @@ describe('AddTodo Component', () => {
         setCategory={setCategory}
         text=""
         setText={setText}
-        editStatus={editStatus}
       />
     );
 
@@ -61,7 +60,6 @@ describe('AddTodo Component', () => {
         setCategory={setCategory}
         text={text}
         setText={setText}
-        editStatus={editStatus}
       />
     );
 
@@ -77,7 +75,6 @@ describe('AddTodo Component', () => {
         setCategory={setCategory}
         text={text}
         setText={setText}
-        editStatus={editStatus}
       />
     );
     expect(screen.getByRole('combobox')).toHaveValue('Work');
@@ -95,7 +92,6 @@ describe('AddTodo Component', () => {
         setCategory={setCategory}
         text={text}
         setText={setText}
-        editStatus={editStatus}
       />
     );
     expect(screen.getByTestId('text-input')).toHaveValue('New todo');
@@ -105,7 +101,6 @@ describe('AddTodo Component', () => {
     const addTodo = vi.fn((e) => e.preventDefault());
     const setCategory = vi.fn();
     const setText = vi.fn();
-    const editStatus = 'Add Todo';
 
     render(
       <AddTodo
@@ -114,7 +109,6 @@ describe('AddTodo Component', () => {
         setCategory={setCategory}
         text="Finish project"
         setText={setText}
-        editStatus={editStatus}
       />
     );
 
@@ -126,7 +120,6 @@ describe('AddTodo Component', () => {
     const addTodo = vi.fn();
     const setCategory = vi.fn();
     const setText = vi.fn();
-    const editStatus = 'Add Todo';
     const inputRef = React.createRef<TodoInputRef>();
 
     render(
@@ -136,7 +129,6 @@ describe('AddTodo Component', () => {
         setCategory={setCategory}
         text=""
         setText={setText}
-        editStatus={editStatus}
         ref={inputRef}
       />
     );

@@ -9,7 +9,6 @@ type AddTodoProps = {
   setCategory: (category: string) => void;
   text: string;
   setText: (text: string) => void;
-  // editStatus: string;
 };
 
 export type TodoInputRef = { focus: () => void };

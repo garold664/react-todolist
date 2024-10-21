@@ -17,11 +17,9 @@ export default function TodoItem({
   setEditedId,
 }: TodoItemProps) {
   const item = useSelector(selectItem(itemId)) as TodoItem;
-
+  console.log(' item: ', item);
   const [category, setCategory] = useState(() => item.category);
-
   const categories = useSelector(selectCategories);
-
   const categoryColor = getCategoryColor(category);
 
   function getCategoryColor(category: string) {
