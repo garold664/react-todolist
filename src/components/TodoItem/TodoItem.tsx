@@ -21,7 +21,6 @@ export default function TodoItem({
   const item = useSelector(selectItem(itemId)) as TodoItem;
   console.log(' item: ', item);
   const [category, setCategory] = useState(() => item.category);
-  const [completed, setCompleted] = useState(() => item.completed);
   const categories = useSelector(selectCategories);
   const categoryColor = getCategoryColor(category);
 
@@ -34,23 +33,23 @@ export default function TodoItem({
   };
 
   const handleToggleCompleted = () => {
-    // setCompleted(!completed);
     dispatch(toggleCompleted({ id: item.id }));
   };
 
   return (
     <li
-      draggable
+      draggable={!item.completed}
       key={item.id}
       className={`${classes.todo} ${item.completed ? classes.completed : ''}`}
       id={item.id.toString()}
+      style={{ color: categoryColor }}
     >
       <input
         type="checkbox"
         checked={item.completed}
         onChange={handleToggleCompleted}
       />
-      <span data-grip className={classes.grip} style={{ color: categoryColor }}>
+      <span data-grip className={classes.grip}>
         <GripIcon />
       </span>
       <b>{category}:</b>
