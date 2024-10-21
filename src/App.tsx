@@ -19,6 +19,9 @@ export default function App() {
   const [currentCategory, setCurrentCategory] = useState('all');
 
   const [filteredTodos, setFilteredTodos] = useState(todos);
+  const [completedTodos, setCompletedTodos] = useState(
+    todos.filter((el) => el.completed)
+  );
   const todoInputRef = useRef<TodoInputRef>(null);
 
   const handleAddTodo = (event: React.FormEvent<HTMLFormElement>) => {
@@ -40,9 +43,17 @@ export default function App() {
 
   useEffect(() => {
     if (currentCategory !== 'all') {
-      setFilteredTodos(todos.filter((el) => el.category === currentCategory));
+      setFilteredTodos(
+        todos.filter(
+          (el) => el.category === currentCategory && el.completed === false
+        )
+      );
+      setCompletedTodos(
+        todos.filter((el) => el.category === currentCategory && el.completed)
+      );
     } else {
-      setFilteredTodos(todos);
+      setFilteredTodos(todos.filter((el) => el.completed === false));
+      setCompletedTodos(todos.filter((el) => el.completed));
     }
   }, [currentCategory, todos]);
 
@@ -69,6 +80,11 @@ export default function App() {
       </div>
       <TodoList
         filteredTodos={filteredTodos}
+        setFilteredTodos={setFilteredTodos}
+      />
+      <hr />
+      <TodoList
+        filteredTodos={completedTodos}
         setFilteredTodos={setFilteredTodos}
       />
       <AddCategory todoInputRef={todoInputRef} setCategory={setCategory} />

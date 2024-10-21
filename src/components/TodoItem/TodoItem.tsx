@@ -1,8 +1,9 @@
 import { GripIcon, PencilIcon } from 'lucide-react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import selectCategories from '../../store/selectors/selectCategories';
 import selectItem from '../../store/selectors/selectItem';
+import { toggleCompleted } from '../../store/store';
 import EditTodoForm from '../EditTodoForm/EditTodoForm';
 import classes from './TodoItem.module.css';
 type TodoItemProps = {
@@ -16,6 +17,7 @@ export default function TodoItem({
   isEdited,
   setEditedId,
 }: TodoItemProps) {
+  const dispatch = useDispatch();
   const item = useSelector(selectItem(itemId)) as TodoItem;
   console.log(' item: ', item);
   const [category, setCategory] = useState(() => item.category);
@@ -31,17 +33,22 @@ export default function TodoItem({
     setEditedId(item.id);
   };
 
+  const handleToggleCompleted = () => {
+    // setCompleted(!completed);
+    dispatch(toggleCompleted({ id: item.id }));
+  };
+
   return (
     <li
       draggable
       key={item.id}
-      className={`${classes.todo} ${completed ? classes.completed : ''}`}
+      className={`${classes.todo} ${item.completed ? classes.completed : ''}`}
       id={item.id.toString()}
     >
       <input
         type="checkbox"
-        checked={completed}
-        onChange={() => setCompleted(!completed)}
+        checked={item.completed}
+        onChange={handleToggleCompleted}
       />
       <span data-grip className={classes.grip} style={{ color: categoryColor }}>
         <GripIcon />

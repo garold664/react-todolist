@@ -45,6 +45,7 @@ const todosSlice = createSlice({
       };
       console.log('Redux: ', action.payload.todo);
     },
+
     addCategory: (state, action) => {
       const newCategory = {
         color: action.payload.color,
@@ -53,6 +54,13 @@ const todosSlice = createSlice({
       };
 
       state.categories.push(newCategory);
+    },
+    toggleCompleted: (state, action) => {
+      const messageItemIndex = state.todos.findIndex(
+        (el) => el.id === action.payload.id
+      );
+      state.todos[messageItemIndex].completed =
+        !state.todos[messageItemIndex].completed;
     },
   },
 });
@@ -70,5 +78,6 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export const { addTodo, changeTodo, addCategory } = todosSlice.actions;
+export const { addTodo, changeTodo, addCategory, toggleCompleted } =
+  todosSlice.actions;
 // export default store;
